@@ -14,6 +14,8 @@ public class Main {
 
             Statement statement = connection.createStatement();
 
+            statement.execute("UPDATE Courses SET name= 'Веб-разработчик с нуля до PRO' WHERE id = 1");
+
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Courses");
             while (resultSet.next()) {
                 String courseName = resultSet.getString("name");
