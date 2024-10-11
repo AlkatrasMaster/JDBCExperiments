@@ -1,34 +1,24 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
 
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/skillbox";
-        String user = "root";
-        String pass = "SwKoToR32";
 
-        try {
-            Connection connection = DriverManager.getConnection(url, user, pass);
+        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+        Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
+        SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
 
-            Statement statement = connection.createStatement();
+        Session session = sessionFactory.openSession();
 
-            statement.execute("UPDATE Courses SET name= 'Веб-разработчик с нуля до PRO' WHERE id = 1");
+        Course course = session.get(Course.class, 1);
+        System.out.println(course.getName());
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Courses");
-            while (resultSet.next()) {
-                String courseName = resultSet.getString("name");
-                System.out.println(courseName);
-            }
-
-            resultSet.close();
-            statement.close();
-            connection.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        sessionFactory.close();
 
     }
 }
