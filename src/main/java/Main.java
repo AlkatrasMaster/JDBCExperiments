@@ -6,6 +6,8 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -18,7 +20,10 @@ public class Main {
          Transaction transaction = session.beginTransaction();
 
          Course course = session.get(Course.class, 1);
-         System.out.println(course.getTeacher().getName());
+         List<Student> studentList = course.getStudents();
+         for (Student student : studentList) {
+             System.out.println(student.getName());
+         }
 
 
          transaction.commit();
