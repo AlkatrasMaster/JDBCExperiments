@@ -6,6 +6,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 
@@ -19,14 +22,17 @@ public class Main {
          Session session = sessionFactory.openSession();
          Transaction transaction = session.beginTransaction();
 
-         Course course = session.get(Course.class, 1);
-         List<Student> studentList = course.getStudents();
-         for (Student student : studentList) {
-             System.out.println(student.getName());
-         }
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Course> query = builder.createQuery(Course.class);
+        Root<Course> root = query.from(Course.class);
+        query.select(root);
+        List<Course> courseList = session.createQuery(query).getResultList();
 
 
-         transaction.commit();
+        for (Course course : courseList) {
+            System.out.println(course.getName());
+        }
+
          sessionFactory.close();
 
     }
