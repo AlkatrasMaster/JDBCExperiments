@@ -19,7 +19,7 @@ public class Course {
     private CourseType type;
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Teacher teacher;
 
     @Column(name = "students_count", nullable = true)

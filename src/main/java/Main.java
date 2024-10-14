@@ -30,7 +30,7 @@ public class Main {
 
 
         for (Course course : courseList) {
-            System.out.println(course.getName());
+            System.out.println(course.getName() + " - " + course.getTeacher().getName());
         }
 
          sessionFactory.close();
